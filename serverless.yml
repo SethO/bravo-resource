@@ -1,0 +1,26 @@
+
+service: bravo
+
+plugins:
+  - serverless-plugin-include-dependencies
+  - serverless-domain-manager
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+functions:
+  helloWorld:
+    handler: src/handler.helloWorld
+    events:
+      - http:
+          path: /hello
+          method: get
+          authorizer: aws_iam
+
+custom:
+  customDomain:
+    domainName: 'sethorell.com'
+    basePath: 'bravo'
+    stage: ${opt:stage, self:provider.stage}
+    createRoute53Record: true
